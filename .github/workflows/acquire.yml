@@ -1,0 +1,26 @@
+name: Acquire data
+# Downloads AMFI's monthly reports, the SIP table and Nifty 50 closes, and commits them (they are small).
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run notebook 01
+        run: python scripts/run_notebooks.py 01
+      - name: Commit the data files
+        if: always()
+        run: |
+          git config user.name "Aditya Khetarpal"
+          git config user.email "80028073+AdityaKhetarpal@users.noreply.github.com"
+          git add data notebooks/01_acquire.ipynb
+          git commit -m "Data: AMFI monthly reports, SIP table and Nifty 50 closes" || exit 0
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

@@ -1,0 +1,16 @@
+pandas
+pyarrow
+openpyxl
+xlrd
+lxml
+html5lib
+beautifulsoup4
+requests
+yfinance
+duckdb
+scipy
+numpy
+matplotlib
+jupytext
+nbclient
+ipykernel
