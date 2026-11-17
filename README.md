@@ -2,7 +2,7 @@
 
 **When the Nifty 50 falls, do Indian mutual fund inflows keep coming or dry up?**
 
-Live site: **[sip-pulse.vercel.app](https://sip-pulse.vercel.app)**
+Live site: **[sippulse.vercel.app](https://sippulse.vercel.app)**
 
 91 months of AMFI data (April 2019 to October 2026) set against the Nifty 50, with a test locked **before** any data was
 downloaded: [design](input/ideas/sip-pulse-design.md) · [plan](input/ideas/sip-pulse-plan.md) · [change log](knowledge/_meta/log.md).
