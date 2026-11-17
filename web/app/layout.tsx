@@ -5,7 +5,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Motion from "@/components/Motion";
 
-const SITE = "https://sippulse.vercel.app";
+const SITE = "https://sip-pulse.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
