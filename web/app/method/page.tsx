@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { overview, monthLong, monthName, pct, inr } from "@/lib/data";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/method" },
   title: "How we tested it",
   description: "The pre-registered test behind SIP Pulse: hypotheses fixed before any data was seen, definitions, verdicts, robustness checks, data checks and limits.",
 };
@@ -27,10 +28,9 @@ export default function Method() {
   return (
     <div className="wrap">
       <div className="head">
-        <div className="kicker">Locked on {r.pre_registered}, before any data was downloaded</div>
         <h1>How we tested it</h1>
         <p>
-          The question, the definitions and the rules for each verdict were written down and locked before we saw the data, so the answer couldn&apos;t
+          The question, the definitions and the rules for each verdict were written down and locked on {r.pre_registered}, before we downloaded any data, so the answer couldn&apos;t
           bend to fit. Everything below can be checked in the <a href={GH}>notebooks on GitHub</a>.
         </p>
       </div>
@@ -50,16 +50,16 @@ export default function Method() {
 
         <h2>Results</h2>
       </div>
-      <div className="table-wrap" style={{ maxWidth: 820 }}>
+      <div className="table-wrap" tabIndex={0} role="region" aria-label="Data table" style={{ maxWidth: 820 }}>
         <table>
           <thead>
             <tr><th>Measure</th><th className="num">After a fall</th><th className="num">Other months</th><th className="num">Gap</th><th className="num">90% range of the gap</th></tr>
           </thead>
           <tbody>
-            {row("H1 · equity inflows, % change", r.h1, "%")}
-            {row("H2 · SIP contributions, % change", r.h2, "%")}
-            {row("Check · equity inflows, ₹ change", r.h1_rupees, "cr")}
-            {row("Check · SIP contributions, ₹ change", r.h2_rupees, "cr")}
+            {row("H1: equity inflows, % change", r.h1, "%")}
+            {row("H2: SIP contributions, % change", r.h2, "%")}
+            {row("Check: equity inflows, ₹ change", r.h1_rupees, "cr")}
+            {row("Check: SIP contributions, ₹ change", r.h2_rupees, "cr")}
           </tbody>
         </table>
       </div>

@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/ibm-plex-sans";
+import "@fontsource-variable/anek-latin/wdth.css";
+import "@fontsource/mukta/400.css";
+import "@fontsource/mukta/600.css";
+import "@fontsource/mukta/700.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "./globals.css";
 import Nav from "@/components/Nav";
@@ -9,6 +12,9 @@ const SITE = "https://sip-pulse.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
+  alternates: { canonical: "/" },
+  twitter: { card: "summary_large_image" },
+  authors: [{ name: "Aditya Khetarpal", url: "https://www.linkedin.com/in/adityakhetarpal" }],
   title: { default: "SIP Pulse: when the Nifty falls, does mutual fund money keep coming?", template: "%s · SIP Pulse" },
   description:
     "91 months of AMFI data, April 2019 to October 2026: what happens to equity mutual fund inflows and SIP contributions when the Nifty 50 falls 5% or more. A locked, pre-registered test.",
@@ -36,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </span>
             <span>Analysis for education, not investment advice. Past flows don&apos;t predict future ones. Not affiliated with AMFI or NSE.</span>
             <span>
-              <a href="https://github.com/AdityaKhetarpal/sip-pulse">Notebooks and data on GitHub</a> · built by{" "}
+              <a href="https://github.com/AdityaKhetarpal/sip-pulse">Notebooks and data on GitHub</a>. Built by{" "}
               <a href="https://www.linkedin.com/in/adityakhetarpal">Aditya Khetarpal</a>
             </span>
           </div>

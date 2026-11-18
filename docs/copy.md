@@ -23,7 +23,7 @@ after, then kept growing.
 - "Do equity inflows drop the month after a fall? **Not clearly.** They fell a median 13.9%, but with only 7 falls that is
   within chance (90% range −31% to +8.5%)."
 - "Do SIPs hold up? **Almost.** A small dip: −1.0% against +1.6% in other months. That's about ₹300 crore."
-- "Found after the test: **Indians buy the dip.** Equity inflows rose in the fall month itself in 6 of 7 falls."
+- "Found after the test: **Inflows usually rose.** Equity inflows rose in the fall month itself in 6 of 7 falls. Not part of the locked test; its 90% range (−0.2% to +45%) includes zero, so it is a lead, not a finding." (revised 18 Nov 2026 after the portfolio audit)
 
 **Main chart title:** SIP money rose from ₹8,238 crore to ₹32,160 crore a month, through every fall.
 **Hint under charts:** Hover or tap a month to see its numbers.

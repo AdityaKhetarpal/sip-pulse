@@ -3,6 +3,7 @@ import MoneyBars from "@/components/MoneyBars";
 import { categories, overview, inr, monthLong } from "@/lib/data";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/money" },
   title: "Where the money goes",
   description: "Net money into Indian mutual funds by financial year: equity categories (large, mid, small cap, flexi cap, sectoral) and fund groups, April 2019 to October 2026.",
 };
@@ -21,15 +22,14 @@ export default function Money() {
   return (
     <div className="wrap">
       <div className="head">
-        <div className="kicker">Where the money goes · financial years (April to March)</div>
         <h1>Where the money goes</h1>
         <p>
-          Net money into each kind of equity fund, by financial year. In {label(latestFull)}, the most went to <b>{top.category.toLowerCase()}</b> funds
+          Net money into each kind of equity fund, by financial year (April to March). In {label(latestFull)}, the most went to <b>{top.category.toLowerCase()}</b> funds
           (₹{inr(top.inflow)} crore). Green is money in, red is money out.
         </p>
       </div>
 
-      <section className="card" data-reveal>
+      <section className="card">
         <h2>Equity funds by category</h2>
         <p className="small">Pick a year. {label(years[0])} starts in {monthLong(overview.window[0])}; {label(years[years.length - 1])} runs only to {monthLong(overview.window[1])}.</p>
         <MoneyBars rows={eq} months={m} initial={latestFull} />
@@ -39,13 +39,13 @@ export default function Money() {
         </p>
       </section>
 
-      <section className="section" data-reveal>
+      <section className="section">
         <h2>All fund groups, year by year</h2>
         <p className="sub">
           Net money in, ₹ crore. Debt funds swing the most because companies park and pull cash in liquid funds, so they say little about
           individual investors. Passive includes index funds and ETFs.
         </p>
-        <div className="table-wrap" style={{ marginTop: 14 }}>
+        <div className="table-wrap" tabIndex={0} role="region" aria-label="Data table" style={{ marginTop: 14 }}>
           <table>
             <thead>
               <tr><th>Group</th>{years.map((y) => <th key={y} className="num">{label(y)}{m[y] < 12 ? "*" : ""}</th>)}</tr>

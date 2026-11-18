@@ -87,7 +87,15 @@ export default function PulseChart({ data }: { data: Month[] }) {
         <span><i className="l-band" />Nifty 50 fell 5% or more that month</span>
       </div>
       <svg className="chart" width={W} height={total} viewBox={`0 0 ${W} ${total}`} role="img"
-        aria-label="Monthly equity fund inflows and SIP contributions, April 2019 to October 2026, with market-fall months marked"
+        aria-label="Monthly equity fund inflows and SIP contributions, April 2019 to October 2026, with market-fall months marked. Use the left and right arrow keys to step through the months."
+        tabIndex={0}
+        onKeyDown={(e) => {
+          const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (e.key === "Home") { e.preventDefault(); setHover(0); }
+          else if (e.key === "End") { e.preventDefault(); setHover(n - 1); }
+          else if (step) { e.preventDefault(); setHover((h) => Math.max(0, Math.min(n - 1, (h ?? (step > 0 ? -1 : n)) + step))); }
+        }}
+        onBlur={() => setHover(null)}
         onMouseMove={(e) => pick(e.clientX, e.currentTarget.getBoundingClientRect())}
         onMouseLeave={() => setHover(null)}
         onTouchStart={(e) => pick(e.touches[0].clientX, e.currentTarget.getBoundingClientRect())}
@@ -127,11 +135,11 @@ export default function PulseChart({ data }: { data: Month[] }) {
         {h ? (
           <>
             <b>{label(h.month)}</b>
-            {h.nifty_ret != null && <> · Nifty <span className={h.fall ? "f" : undefined}>{h.nifty_ret > 0 ? "+" : ""}{h.nifty_ret.toFixed(1)}%</span></>}
-            {h.equity != null && <> · into equity funds <b>₹{inr(h.equity)} cr</b></>}
-            {h.sip != null && <> · SIPs <b>₹{inr(h.sip)} cr</b></>}
+            {h.nifty_ret != null && <>: Nifty <span className={h.fall ? "f" : undefined}>{h.nifty_ret > 0 ? "+" : ""}{h.nifty_ret.toFixed(1)}%</span></>}
+            {h.equity != null && <>, into equity funds <b>₹{inr(h.equity)} cr</b></>}
+            {h.sip != null && <>, SIPs <b>₹{inr(h.sip)} cr</b></>}
           </>
-        ) : "Hover or tap a month to see its numbers. Amounts are ₹ crore per month."}
+        ) : "Hover, tap, or focus the chart and use the arrow keys to see a month's numbers. Amounts are ₹ crore per month."}
       </div>
     </div>
   );

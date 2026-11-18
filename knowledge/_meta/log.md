@@ -13,3 +13,5 @@
 - 2026-11-17 · sip-pulse-plan · **Exploratory finding, reported separately from the test.** The same-month correlation
   (Spearman −0.40) led to a count of fall months in which equity inflows rose. This was not pre-registered and is labelled
   exploratory wherever it is shown.
+- 2026-11-18 · website · **Design revision, no change to data or verdicts.** New typefaces, ruled answer rows, one animation,
+  keyboard-readable charts, SEO metadata. Recorded in DESIGN.md.
