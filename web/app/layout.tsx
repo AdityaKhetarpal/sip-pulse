@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-mono/400.css";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Motion from "@/components/Motion";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const SITE = "https://sip-pulse.vercel.app";
 
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </footer>
         <Motion />
+        <SpeedInsights />
       </body>
     </html>
   );
