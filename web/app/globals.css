@@ -156,6 +156,7 @@ code { font-family: var(--mono); font-size: 0.86em; background: var(--surface); 
 .foot h3 { font: 500 14px/1.4 var(--sans); letter-spacing: 0; color: #a3a9ae; margin: 0 0 16px; }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .foot a { color: #fff; text-decoration: none; display: inline-block; padding: 8px 0; }
+.foot a.brand { display: inline-flex; align-items: center; gap: 10px; padding: 0; font-size: 20px; }
 .foot a:hover { color: #7fd8a9; }
 .foot__legal { border-top: 1px solid #2a3036; margin: 48px 0 0; padding-top: 24px; color: #a3a9ae; font-size: 14px; }
 .foot :focus-visible { outline-color: #7fd8a9; }
