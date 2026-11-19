@@ -162,3 +162,24 @@ svg text { fill: var(--muted); font: 400 13px/1 var(--font-text); font-variant-n
 @media (max-width: 639px) { .c-mini text { font-size: 26px; } .c-growth text { font-size: 20px; } }
 @media (min-width: 640px) and (max-width: 1023px) { .c-mini text { font-size: 18px; } }
 @media (max-width: 359px) { #questions .panel { --p-h: 340px; } #ledger .panel { --p-h: 300px; } }
+/* a short tablet screen (a tablet held sideways, 900x700): the record's line chart steps down so the eight lines fit */
+@media (min-width: 640px) and (max-width: 1023px) and (max-height: 820px) { #ledger { --h: 2 } #ledger .panel { --p-h: 220px; } }
+
+/* the record's SIP line: the first and last month as text over a chart that stretches to its box */
+.sip-chart { grid-template-rows: auto minmax(0, 1fr); gap: var(--s-3); }
+.sip-chart__ends { display: flex; justify-content: space-between; gap: var(--s-4); font-size: var(--t-small); color: var(--muted); }
+.sip-chart__ends span:last-child { text-align: right; }
+.sip-chart__ends b { display: block; font-weight: 500; font-size: var(--t-lead); color: var(--ink); }
+.c-growth { display: block; }
+/* the hero window: the whole chart fits whatever the screen leaves it, ending where the frame starts to fade,
+   so the SIP line shows on a 768px laptop as on a 1080px screen */
+@media (min-width: 640px) {
+  .hero--centred .hero__window > .hero-win { bottom: 18%; display: flex; flex-direction: column; }
+  .hero-win__plot { flex: 1 1 auto; min-height: 0; padding-bottom: var(--s-3); }
+  .hero-win__plot svg { height: 100%; min-height: 0; }
+}
+@media (min-width: 640px) and (max-height: 820px) { .hero-win__key { display: none; } }
+/* the hero chart is stretched to fit a short screen, so its line is drawn thicker there to keep about 2.5px */
+@media (min-width: 640px) and (max-height: 820px) { .hero-win .c-sip { stroke-width: 5; } }
+@media (min-width: 640px) and (min-height: 821px) and (max-height: 960px) { .hero-win .c-sip { stroke-width: 3.6; } }
+@media (max-width: 359px) { main > #answers[data-moment]:not(.is-live) .mo-pc__visual > svg { aspect-ratio: 16 / 9; } }

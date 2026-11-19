@@ -1,6 +1,8 @@
 // Builds the SIP Pulse home page (public/index.html) from the data in public/data, on the taste-skill kit in
 // public/assets. Run before `next build`: npm run build does it. Every number on the page comes from the data.
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, unlinkSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { transformSync } from "esbuild";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pulse, fallMini, range, sipGrowth, label, inr } from "../public/home/chart.js";
@@ -83,10 +85,32 @@ const live = pulse(monthly, 700, { height: 380 }).svg;
 
 const LD = { "@context": "https://schema.org", "@type": "Dataset", name: "SIP Pulse: Indian mutual fund flows during Nifty 50 falls", description: `Monthly net inflows into open-ended equity mutual funds and SIP contributions in India, ${long(first)} to ${long(last)}, with the months the Nifty 50 fell 5% or more and a pre-registered test of what happened after them.`, url: "https://sip-pulse.vercel.app", temporalCoverage: `${first}/${last}`, keywords: ["mutual funds", "SIP", "AMFI", "Nifty 50", "India"], isBasedOn: ["https://www.amfiindia.com/research-information/amfi-monthly"], sameAs: "https://github.com/AdityaKhetarpal/sip-pulse", creator: { "@type": "Person", name: "Aditya Khetarpal", url: "https://www.linkedin.com/in/adityakhetarpal" } };
 
-// the block start.mjs brand printed (kept in scripts/brand.html), with the Google Fonts links swapped for the
-// same two families self-hosted (public/fonts), so the page never waits on a third-party font host
-const brand = readFileSync(join(root, "scripts/brand.html"), "utf8").replace(/<!--.*?-->\n?/g, "")
-  .split("\n").filter((l) => !/fonts\.(googleapis|gstatic)\.com/.test(l)).join("\n").trim();
+// the block start.mjs brand printed (kept in scripts/brand.html): its kit stylesheets are bundled and minified into
+// one file with a content hash in its name (cached for a year), its :root palette stays inline; the Google Fonts
+// links are swapped for the same two families self-hosted (public/fonts)
+const brandRaw = readFileSync(join(root, "scripts/brand.html"), "utf8").replace(/<!--.*?-->\n?/g, "");
+const kitCss = [...brandRaw.matchAll(/<link rel="stylesheet" href="assets\/([^"]+)">/g)].map((m) => "assets/" + m[1]);
+const palette = brandRaw.match(/<style>[\s\S]*?<\/style>/)[0];
+for (const f of readdirSync(join(root, "public/home"))) if (/^site-.*\.css$/.test(f)) unlinkSync(join(root, "public/home", f));
+const bundle = (name, files) => {
+  const css = files.map((f) => readFileSync(join(root, "public", f), "utf8")).join("\n");
+  const out = transformSync(css, { loader: "css", minify: true }).code;
+  const file = `site-${name}.${createHash("sha256").update(out).digest("hex").slice(0, 10)}.css`;
+  writeFileSync(join(root, "public/home", file), out);
+  return `<link rel="stylesheet" href="/home/${file}">`;
+};
+// the order is the kit's: its stylesheets, the palette, the fragments' own CSS (ui.js and moments.js look for these
+// three by name, so they stay separate files), then the diagram and the page's own CSS
+// motion.css stays its own file too: the checker and the kit find the micro-interaction layer by that name
+const STYLES = [
+  bundle("kit", kitCss.filter((f) => !f.endsWith("motion/motion.css"))),
+  '<link rel="stylesheet" href="/assets/motion/motion.css">',
+  palette,
+  '<link rel="stylesheet" href="/assets/ui/base.css">',
+  '<link rel="stylesheet" href="/assets/ui/window/fragment.css">',
+  '<link rel="stylesheet" href="/assets/moments/pinned-chapters/moment.css">',
+  bundle("page", ["assets/diagrams/diagram.css", "home/home.css"]),
+].join("\n");
 const FONTS = `<link rel="preload" href="/fonts/instrument-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">`;
 
@@ -110,17 +134,19 @@ const html = `<!doctype html>
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
 ${FONTS}
-${brand.replace(/href="assets\//g, 'href="/assets/')}
-<link rel="stylesheet" href="/assets/ui/base.css">
-<link rel="stylesheet" href="/assets/ui/window/fragment.css">
-<link rel="stylesheet" href="/assets/diagrams/diagram.css">
-<link rel="stylesheet" href="/home/home.css">
+${STYLES}
 <script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
 <script src="/assets/backgrounds/backgrounds.js"></script>
 <script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
 <link rel="modulepreload" href="/assets/moments/moments.js">
 <link rel="modulepreload" href="/assets/moments/lib.js">
 <link rel="modulepreload" href="/assets/moments/pinned-chapters/moment.js">
+<link rel="modulepreload" href="/assets/system.js">
+<link rel="modulepreload" href="/assets/motion/motion.js">
+<link rel="modulepreload" href="/assets/layout/layout.js">
+<link rel="modulepreload" href="/assets/ui/ui.js">
+<link rel="modulepreload" href="/home/chart.js">
+<link rel="preload" href="/data/monthly.json" as="fetch" crossorigin>
 <script type="application/ld+json">${JSON.stringify(LD)}</script>
 <script>window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -128,7 +154,7 @@ ${brand.replace(/href="assets\//g, 'href="/assets/')}
 <body>
 <!-- type: software (a fintech data study; site-kind software)
      deal: hero centred, nav-centre, close-word, footer-dark, rhythm space, buttons solid, mark: the client's own SIP Pulse mark,
-     palette: the client's own colours (start.mjs brand), type instrument, radius sharp, ground sage, effect caustics (hero window)
+     palette: the client's own colours (start.mjs brand), type instrument, radius sharp, ground sage, no effect (the caustics shader was taken out for speed, 19 Nov 2026)
      moments: pinned-chapters (#answers)
      Generated by scripts/build-home.mjs from public/data: edit the script, not this file. -->
 <header class="nav nav--centre">
@@ -176,7 +202,7 @@ ${brand.replace(/href="assets\//g, 'href="/assets/')}
         <p class="hero__lead">In each month since 2019 that the Nifty 50 fell 5% or more, equity funds took in more money than they paid out.</p>
         <div class="btn-row"><a class="btn btn--primary" href="/falls/">${MAIN}${ARROW}</a><a class="btn btn--secondary" href="/method/">Read the method</a></div>
       </div>
-      <div class="hero__window" data-fx="caustics" data-fx-seed="7" role="img" aria-label="Chart of monthly net money into equity funds and SIP money, ${long(first)} to ${long(last)}: SIP money rises from ${crore(o.sip_growth.from)} to ${crore(o.latest.sip)}, and the ${nFalls} fall months are marked">
+      <div class="hero__window" role="img" aria-label="Chart of monthly net money into equity funds and SIP money, ${long(first)} to ${long(last)}: SIP money rises from ${crore(o.sip_growth.from)} to ${crore(o.latest.sip)}, and the ${nFalls} fall months are marked">
         <div class="ly-piece ui ui-panel hero-win" aria-hidden="true">
           <div class="ui-win__bar">${DOTS}<span class="ui-win__crumb">SIP Pulse <i>/</i> <b>Equity funds and SIPs</b></span><span class="ui-spacer"></span><span class="hero-win__src">${label(first)} to ${label(last)}</span></div>
           <div class="hero-win__key"><span><i class="k-bar"></i>Into equity funds</span><span><i class="k-line"></i>SIP money</span><span><i class="k-band"></i>Fall month</span></div>
@@ -227,7 +253,7 @@ ${brand.replace(/href="assets\//g, 'href="/assets/')}
         <div class="section-head span-5">
           <h2 id="ledger-h">Inflows and SIPs in eight lines</h2>
           <p>Every figure comes from AMFI’s monthly reports. Amounts are ₹ crore in one month.</p>
-          <div class="panel"><div class="ui ui-panel sip-chart" role="img" aria-label="SIP money each month, from ${crore(o.sip_growth.from)} in ${long(first)} to ${crore(o.latest.sip)} in ${long(last)}">${sipGrowth(monthly, 520, 400)}</div></div>
+          <div class="panel"><div class="ui ui-panel sip-chart" role="img" aria-label="SIP money each month, from ${crore(o.sip_growth.from)} in ${long(first)} to ${crore(o.latest.sip)} in ${long(last)}"><div class="sip-chart__ends" aria-hidden="true"><span>${label(first)}<b>₹${inr(o.sip_growth.from)} cr</b></span><span>${label(last)}<b>₹${inr(o.latest.sip)} cr</b></span></div>${sipGrowth(monthly)}</div></div>
         </div>
         <ul class="rows span-6 start-7">
             ${ledger}

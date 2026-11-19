@@ -60,20 +60,15 @@ export function fallMini(rows, W = 400, H = 220) {
   return `<svg class="c-mini" viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">${s}</svg>`;
 }
 
-/** SIP money each month as one line, its first and last month labelled. */
-export function sipGrowth(data, W = 520, H = 240) {
-  const L = 12, R = 12, T = 44, B = 30;
-  const v = data.map((d) => d.sip), vmax = Math.max(...v) * 1.05;
-  const x = (i) => L + (W - L - R) * (i / (data.length - 1));
-  const y = (s) => T + (H - T - B) * (1 - s / vmax);
+/** SIP money each month as one line, stretched to its box (its labels are HTML beside it, so they never shrink). */
+export function sipGrowth(data, W = 520, H = 300) {
+  const v = data.map((d) => d.sip), vmax = Math.max(...v) * 1.04;
+  const x = (i) => W * (i / (data.length - 1));
+  const y = (s) => H * (1 - s / vmax);
   const d = data.map((m, i) => `${i ? "L" : "M"}${f1(x(i))},${f1(y(m.sip))}`).join("");
-  let s = `<path class="c-area" d="${d}L${f1(x(data.length - 1))},${H - B}L${f1(x(0))},${H - B}Z"/><path class="c-sip c-sip--still" d="${d}"/>`;
-  s += `<line class="c-zero" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/>`;
-  const a = data[0], z = data.at(-1);
-  s += `<circle class="c-dot" cx="${f1(x(0))}" cy="${f1(y(a.sip))}" r="4"/><circle class="c-dot c-dot--on" cx="${f1(x(data.length - 1))}" cy="${f1(y(z.sip))}" r="4"/>`;
-  s += `<text class="c-v" x="${f1(x(0))}" y="${f1(y(a.sip) - 14)}">₹${inr(a.sip)} cr</text><text class="c-v" x="${f1(x(data.length - 1))}" y="${f1(y(z.sip) - 14)}" text-anchor="end">₹${inr(z.sip)} cr</text>`;
-  s += `<text x="${f1(x(0))}" y="${H - 8}">${label(a.month)}</text><text x="${f1(x(data.length - 1))}" y="${H - 8}" text-anchor="end">${label(z.month)}</text>`;
-  return `<svg class="c-growth" viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">${s}</svg>`;
+  const s = `<path class="c-area" d="${d}L${W},${H}L0,${H}Z"/><path class="c-sip c-sip--still" d="${d}" vector-effect="non-scaling-stroke"/>` +
+    `<line class="c-zero" x1="0" x2="${W}" y1="${H}" y2="${H}" vector-effect="non-scaling-stroke"/>`;
+  return `<svg class="c-growth" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s}</svg>`;
 }
 
 /** One locked-test answer as a picture: the two medians as bars, then the gap with its 90% range against zero. */
@@ -86,7 +81,9 @@ export function range(t, W = 640, H = 480) {
   const bar = (yy, v, cls, name) =>
     `<text class="c-k" x="${L - 18}" y="${yy + 28}" text-anchor="end">${name}</text>` +
     `<rect class="${cls}" x="${f1(Math.min(x(0), x(v)))}" y="${yy}" width="${f1(Math.abs(x(v) - x(0)))}" height="40"/>` +
-    `<text class="c-v" x="${f1(v < 0 ? x(v) - 10 : x(v) + 10)}" y="${yy + 28}" text-anchor="${v < 0 ? "end" : "start"}">${p(v)}</text>`;
+    // a short negative bar has no room for its figure on the left (the row's name is there): it goes right of zero
+    (v < 0 && x(v) - 10 - 90 < L ? `<text class="c-v" x="${f1(x(0) + 10)}" y="${yy + 28}" text-anchor="start">${p(v)}</text>`
+      : `<text class="c-v" x="${f1(v < 0 ? x(v) - 10 : x(v) + 10)}" y="${yy + 28}" text-anchor="${v < 0 ? "end" : "start"}">${p(v)}</text>`);
   let s = `<line class="c-zero" x1="${f1(x(0))}" x2="${f1(x(0))}" y1="60" y2="${H - 70}"/>`;
   s += bar(96, t.after_fall_median, "c-bar c-bar--fall", t.fallName ?? "After a fall");
   s += bar(176, t.other_median, "c-bar", "Other months");

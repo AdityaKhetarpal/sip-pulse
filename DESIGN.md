@@ -79,7 +79,18 @@ design critique and UX copy reviews. What changed and why:
 - **Checks:** taste-skill gate PASS (two section-gap waivers for the pinned moment, `docs/taste-skill/waivers.json`);
   layout check clean at 1440, 1024, 820, 768, 390 and 320; perf PASS.
 
+## Revision, 19 Nov 2026 evening: speed and the breaks
+- **Speed:** the caustics WebGL shader behind the hero window is gone (it redrew a 1280x383 canvas every frame; scrolling
+  measured 4 fps, now 60 fps with no slow frames). The kit's stylesheets ship as two minified bundles with a content hash
+  (14 CSS files became 7 requests), every module is preloaded, and `web/vercel.json` caches fonts and bundles for a year
+  and the kit for an hour (served stale while it refreshes).
+- **Breaks fixed:** on a 1366x768 or 1280x720 laptop the hero window showed only the top of the chart, never the SIP line:
+  the chart now fits whatever height the window has. The record's SIP chart labels are HTML, so they no longer shrink to
+  8px. A short negative figure in an answer chart no longer sits on its row's name. A tablet held sideways (900x700) gives
+  the record two screens; a 320px phone gets shorter answer pictures.
+
 ## Change log
+- 2026-11-19 (evening): speed and layout breaks (above).
 - 2026-11-19: taste-skill rebuild (above).
 - 2026-11-18: revision above.
 - 2026-11-17: first design (design council).

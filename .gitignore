@@ -8,3 +8,4 @@ node_modules/
 web/out/
 web/shots/
 web/.taste-skill/
+web/public/home/site-*.css
