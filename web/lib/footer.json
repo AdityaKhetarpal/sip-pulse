@@ -1,0 +1,19 @@
+{
+  "_note": "The one footer of every SIP Pulse page: app/layout.tsx renders it for the Next.js pages, scripts/build-home.mjs for the home page. Edit it here; its look is app/footer.css.",
+  "lede": "Indian mutual fund flows against the Nifty 50, from AMFI data.",
+  "columns": [
+    { "title": "Pages", "links": [
+      ["Every fall", "/falls/"],
+      ["Where the money goes", "/money/"],
+      ["How we tested it", "/method/"],
+      ["Aditya Khetarpal on LinkedIn", "https://www.linkedin.com/in/adityakhetarpal"]
+    ] },
+    { "title": "Data", "links": [
+      ["AMFI monthly reports", "https://www.amfiindia.com/research-information/amfi-monthly"],
+      ["AMFI SIP data", "https://www.amfiindia.com/mutual-fund"],
+      ["Nifty 50 closes, Yahoo Finance", "https://finance.yahoo.com/quote/%5ENSEI/history/"],
+      ["Notebooks on GitHub", "https://github.com/AdityaKhetarpal/sip-pulse"]
+    ] }
+  ],
+  "legal": "© 2026 SIP Pulse. For education, not investment advice. Past flows don’t predict future ones. Not affiliated with AMFI or NSE."
+}

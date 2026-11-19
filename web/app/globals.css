@@ -148,16 +148,5 @@ td.neg { color: var(--fall); }
 code { font-family: var(--mono); font-size: 0.86em; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
 .callout { border-left: 3px solid var(--money); background: var(--surface); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; max-width: 46em; }
 
-/* footer: the home page's dark ground */
-.foot { background: var(--ink); color: #fff; margin-top: 120px; padding: 72px 0 48px; font-size: 15px; }
-.foot .brand { color: #fff; }
-.foot__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); gap: 24px; }
-.foot__lede { font-size: 18px; line-height: 1.4; max-width: 30ch; margin-top: 16px; }
-.foot h3 { font: 500 14px/1.4 var(--sans); letter-spacing: 0; color: #a3a9ae; margin: 0 0 16px; }
-.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.foot a { color: #fff; text-decoration: none; display: inline-block; padding: 8px 0; }
-.foot a.brand { display: inline-flex; align-items: center; gap: 10px; padding: 0; font-size: 20px; }
-.foot a:hover { color: #7fd8a9; }
-.foot__legal { border-top: 1px solid #2a3036; margin: 48px 0 0; padding-top: 24px; color: #a3a9ae; font-size: 14px; }
-.foot :focus-visible { outline-color: #7fd8a9; }
-@media (max-width: 860px) { .foot__grid { grid-template-columns: 1fr 1fr; } .foot__grid > :first-child { grid-column: 1 / -1; } }
+/* the footer is app/footer.css; on the inner pages it sits 120px under the content */
+.foot { margin-top: 120px; }

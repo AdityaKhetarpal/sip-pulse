@@ -1,0 +1,15 @@
+/* The one footer of every SIP Pulse page (its words and links: lib/footer.json). Imported by app/layout.tsx for the
+   Next.js pages and bundled into the home page by scripts/build-home.mjs, so both always look the same. */
+.foot { background: #0f1419; color: #fff; padding: 72px 0 48px; font: 400 15px/1.6 var(--sans, var(--font-text, system-ui, sans-serif)); }
+.foot__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); gap: 24px; }
+.foot a { color: #fff; text-decoration: none; display: inline-block; padding: 8px 0; }
+.foot a:hover { color: #7fd8a9; }
+.foot a.foot__brand { display: inline-flex; align-items: center; gap: 10px; padding: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; white-space: nowrap; }
+.foot__brand svg { width: 24px; height: 24px; flex: none; color: #fff; }
+.foot__lede { font-size: 18px; line-height: 1.4; max-width: 30ch; margin: 16px 0 0; color: #fff; }
+.foot h3 { font: 500 14px/1.4 var(--sans, var(--font-text, system-ui, sans-serif)); letter-spacing: 0; color: #a3a9ae; margin: 0 0 16px; }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.foot__legal { border-top: 1px solid #2a3036; margin: 48px 0 0; padding-top: 24px; color: #a3a9ae; font-size: 14px; }
+.foot :focus-visible { outline: 2px solid #7fd8a9; outline-offset: 2px; }
+@media (max-width: 860px) { .foot__grid { grid-template-columns: 1fr 1fr; } .foot__grid > :first-child { grid-column: 1 / -1; } }
+@media (max-width: 639px) { .foot { padding: 56px 0 40px; } .foot a { padding: 11px 0; } }

@@ -7,7 +7,6 @@
 
 /* the client's mark beside the name */
 .nav__logo .sp-mark { width: 24px; height: 24px; flex: none; }
-.footer--dark .sp-mark { color: var(--p-inv-ink); }
 
 /* charts: shared marks */
 .c-band { fill: var(--c-band); }
@@ -128,8 +127,6 @@ svg text { fill: var(--muted); font: 400 13px/1 var(--font-text); font-variant-n
 @media (max-width: 639px) { #questions .panel { --p-h: 300px; margin-top: var(--s-5); } }
 @media (max-width: 639px) { .fall-chart, .sip-chart { inset: var(--s-3); padding: var(--s-2); } }
 
-/* the name across the wrap: Instrument Sans rises above a .86 line, so the line is set to hold its capitals */
-.close__word { line-height: 1.02; }
 /* tablet and phone: the list pane shows only the rows it holds whole */
 @media (max-width: 1023px) { .app .ui-win__row:nth-child(n + 4) { display: none; } }
 /* the answers at rest (under 1024px): three rows that fit one screen */
@@ -142,7 +139,6 @@ svg text { fill: var(--muted); font: 400 13px/1 var(--font-text); font-variant-n
   #ledger, #questions { --hm: 2 }
   #ledger .panel { display: block; --p-h: 320px; margin-top: var(--s-6); }
   main > #answers[data-moment]:not(.is-live) { min-height: 200svh; }
-  footer.closing { --hm: 2 }
 }
 /* from 1024px the picture under a heading runs down to the section's foot, beside the list it explains */
 @media (min-width: 1024px) {
@@ -184,11 +180,3 @@ svg text { fill: var(--muted); font: 400 13px/1 var(--font-text); font-variant-n
 @media (min-width: 640px) and (min-height: 821px) and (max-height: 960px) { .hero-win .c-sip { stroke-width: 3.6; } }
 @media (max-width: 359px) { main > #answers[data-moment]:not(.is-live) .mo-pc__visual > svg { aspect-ratio: 16 / 9; } }
 
-/* the footer at every width: at least one screen, and taller when a short, wide window (1770x740) leaves its
-   close, its name set wide and its links less room than they need, so nothing lies on anything else; it is the
-   page's last block, so growing pushes nothing. The name is sized by the screen's height as well as its width. */
-footer.closing { height: auto; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
-footer.closing > .wrap { flex: 1 0 auto; height: auto; min-height: 0; display: flex; flex-direction: column; gap: var(--s-8); }
-footer.closing > .wrap > .closing__cta { flex: 1 0 auto; }
-.close__word { font-size: clamp(56px, min(14.5vw, 24svh), 216px); padding-top: .04em; }
-@media (max-width: 639px) { .close__word { font-size: clamp(48px, 19vw, 96px); } }

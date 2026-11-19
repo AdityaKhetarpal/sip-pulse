@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./footer.css";
+import footer from "@/lib/footer.json";
 import Nav from "@/components/Nav";
 import Mark from "@/components/Mark";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -35,29 +37,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="wrap">
             <div className="foot__grid">
               <div>
-                <a className="brand" href="/"><Mark />SIP Pulse</a>
-                <p className="foot__lede">Indian mutual fund flows against the Nifty 50, from AMFI data.</p>
+                <a className="foot__brand" href="/"><Mark />SIP Pulse</a>
+                <p className="foot__lede">{footer.lede}</p>
               </div>
-              <div>
-                <h3>Pages</h3>
-                <ul>
-                  <li><a href="/falls/">Every fall</a></li>
-                  <li><a href="/money/">Where the money goes</a></li>
-                  <li><a href="/method/">How we tested it</a></li>
-                  <li><a href="https://www.linkedin.com/in/adityakhetarpal">Aditya Khetarpal on LinkedIn</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3>Data</h3>
-                <ul>
-                  <li><a href="https://www.amfiindia.com/research-information/amfi-monthly">AMFI monthly reports</a></li>
-                  <li><a href="https://www.amfiindia.com/mutual-fund">AMFI SIP data</a></li>
-                  <li><a href="https://finance.yahoo.com/quote/%5ENSEI/history/">Nifty 50 closes, Yahoo Finance</a></li>
-                  <li><a href="https://github.com/AdityaKhetarpal/sip-pulse">Notebooks on GitHub</a></li>
-                </ul>
-              </div>
+              {footer.columns.map((c) => (
+                <div key={c.title}>
+                  <h3>{c.title}</h3>
+                  <ul>{c.links.map(([label, href]) => <li key={href}><a href={href}>{label}</a></li>)}</ul>
+                </div>
+              ))}
             </div>
-            <p className="foot__legal">&copy; 2026 SIP Pulse. For education, not investment advice. Past flows don&apos;t predict future ones. Not affiliated with AMFI or NSE.</p>
+            <p className="foot__legal">{footer.legal}</p>
           </div>
         </footer>
         <SpeedInsights />
