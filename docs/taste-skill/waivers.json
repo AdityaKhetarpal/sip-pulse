@@ -1,0 +1,4 @@
+[
+  { "check": "section-gaps", "target": "section#ledger / section#answers", "reason": "the gap is the pinned-chapters moment's own stage: live, the kit centres it in a sticky 100svh frame; at rest on a phone it holds two screens, so the space above its heading is the moment's, not the page's rhythm" },
+  { "check": "section-gaps", "target": "section#answers / section#falls", "reason": "at rest on a phone the pinned-chapters section is held at two screens (min-height 200svh) so it stays on the screen grid; the space under its three rows is that second screen, which the moment needs live" }
+]

@@ -5,3 +5,6 @@ node_modules/
 .vercel
 .env*
 *.tsbuildinfo
+web/out/
+web/shots/
+web/.taste-skill/

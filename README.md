@@ -35,7 +35,7 @@ Nifty 50 month-end closes (Yahoo)      ┘
 | [04_analysis](notebooks/04_analysis.ipynb) | The pre-registered test: medians, 10,000-sample bootstrap ranges, Spearman correlation, rupee robustness check |
 | [05_export](notebooks/05_export.ipynb) | Writes the small JSON files the website reads |
 
-Website: Next.js on Vercel, custom SVG charts, GSAP (the SIP line draws like a heartbeat), Vanta and Lenis.
+Website: a static Next.js export on Vercel. The home page is plain HTML built on the taste-skill kit by `web/scripts/build-home.mjs` from the exported data (custom SVG charts, the SIP line draws itself once); the inner pages are Next.js.
 Design decisions: [DESIGN.md](DESIGN.md) · copy: [docs/copy.md](docs/copy.md).
 
 ## Run it
@@ -43,7 +43,7 @@ Design decisions: [DESIGN.md](DESIGN.md) · copy: [docs/copy.md](docs/copy.md).
 ```bash
 pip install -r requirements.txt
 python scripts/run_notebooks.py 01 02 03 04 05     # 01 needs internet access to amfiindia.com and Yahoo Finance
-cd web && npm install && npm run dev
+cd web && npm install && npm run build && npx serve out   # npm run home rebuilds only the home page
 ```
 
 ## Data

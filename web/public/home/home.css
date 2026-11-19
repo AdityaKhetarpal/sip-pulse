@@ -1,0 +1,164 @@
+/* SIP Pulse home: page CSS only where the kit says page CSS (inside a visual, the app-frame recipe, --p-h).
+   Colour keeps its one meaning: the accent green for money coming in, red only for fall months, grey for the rest. */
+:root {
+  --c-bar: #c4cad1; --c-bar-neg: #8a939c; --c-sip: var(--p-accent);
+  --c-fall: #c3322b; --c-band: rgb(195 50 43 / .10);
+}
+
+/* the client's mark beside the name */
+.nav__logo .sp-mark { width: 24px; height: 24px; flex: none; }
+.footer--dark .sp-mark { color: var(--p-inv-ink); }
+
+/* charts: shared marks */
+.c-band { fill: var(--c-band); }
+.c-bar { fill: var(--c-bar); }
+.c-bar--neg { fill: var(--c-bar-neg); }
+.c-bar.is-on { fill: var(--c-bar-neg); }
+.c-bar--fall { fill: var(--muted); }
+.c-zero { stroke: var(--muted); stroke-width: 1; }
+.c-grid { stroke: color-mix(in oklab, var(--ink) 10%, transparent); stroke-width: 1; }
+.c-sip { fill: none; stroke: var(--c-sip); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.c-dot { fill: var(--bg); stroke: var(--c-sip); stroke-width: 2; }
+.c-dot--on { fill: var(--c-sip); }
+.c-area { fill: color-mix(in oklab, var(--c-sip) 10%, transparent); }
+.c-v { fill: var(--ink); font-weight: 500; }
+.c-cursor line { stroke: var(--muted); stroke-dasharray: 3 3; }
+.c-cursor circle { fill: var(--c-sip); }
+svg text { fill: var(--muted); font: 400 13px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+
+/* hero: the 91-month picture in one window; the SIP line draws once on load */
+.hero-win { overflow: hidden; }
+.hero-win .ui-win__bar { display: flex; align-items: center; gap: 10px; }
+.hero-win__src { font-size: 13px; color: var(--u-soft, var(--muted)); white-space: nowrap; }
+.hero-win__key { display: flex; flex-wrap: wrap; gap: 6px 20px; padding: 14px 20px 0; font-size: 13px; color: var(--u-soft, var(--muted)); }
+.hero-win__key i { display: inline-block; vertical-align: middle; margin-right: 7px; }
+.k-bar { width: 9px; height: 12px; background: var(--c-bar); }
+.k-line { width: 18px; height: 3px; background: var(--c-sip); border-radius: 2px; }
+.k-band { width: 12px; height: 12px; background: var(--c-band); box-shadow: inset 0 0 0 1px rgb(195 50 43 / .45); }
+.hero-win__plot { padding: 8px 16px 16px; }
+.hero-win__plot svg { display: block; width: 100%; height: 300px; }
+.hero-win .c-sip { stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-win .c-sip { animation: sp-draw 2.4s cubic-bezier(.45, 0, .25, 1) .4s both; }
+}
+@keyframes sp-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (max-width: 639px) {
+  .hero-win__key span:last-child { display: none; }
+  .hero-win__src { display: none; }
+  .hero-win__plot svg { height: 200px; }
+}
+
+/* app-frame (sections-library.md, the whole recipe) */
+.app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
+.app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+.app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
+.app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
+.app > .app__pane--list::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
+@media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
+@media (max-width: 1023px) {
+  .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .app > .app__pane--list { max-height: 252px; }
+  .app > .app__pane--list::after { display: none; }
+  .app .ui-win__side { display: none; }
+  .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
+  .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
+}
+@media (max-width: 639px) {
+  .app.ui { grid-template-rows: minmax(0, 1fr); }
+  .app > .app__pane--list { display: none; }
+  .app > .app__pane + .app__pane { border-top: 0; }
+}
+/* the open pane: the live chart fills it, its readout under the plot */
+.live { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.live .ui-win__bar { display: flex; align-items: center; gap: 10px; }
+.live__plot { position: relative; min-height: 220px; margin: 16px 16px 0; cursor: crosshair; touch-action: pan-y; }
+.live__plot > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.live__plot:focus-visible { outline: 2px solid var(--action); outline-offset: 4px; }
+.live__readout { margin: 0; padding: 12px 20px 16px; font-size: 14px; line-height: 1.5; color: var(--u-soft, var(--muted)); min-height: 3.6em; }
+.live__readout b { color: var(--u-ink, var(--ink)); font-weight: 500; }
+.live__readout .is-fall { color: var(--c-fall); font-weight: 500; }
+
+/* the locked-test answers: each step's picture is a range chart */
+.mo-pc__visual > svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; background: var(--surface); }
+.mo-pc__visuals > svg, .mo-pc__visuals svg { display: block; width: 100%; height: auto; }
+.c-range-chart text { font-size: 22px; }
+.c-range-chart .c-k { fill: var(--ink); }
+.c-range-chart .c-v { fill: var(--ink); font-weight: 500; }
+.c-range { stroke: var(--ink); stroke-width: 3; }
+.c-gap { fill: var(--c-sip); }
+@media (min-width: 640px) { [data-moment="pinned-chapters"]:not(.is-live) .mo-pc__visual > svg { max-height: 30svh; } }
+@media (max-width: 639px) { [data-moment="pinned-chapters"]:not(.is-live) .mo-pc__visual > svg { aspect-ratio: 16 / 9; max-height: 26svh; } }
+
+/* charts that sit on a lit panel get a white sheet of their own, like a fragment */
+.hero-win, .fall-chart, .sip-chart { --fx-bg: #ffffff; --fx-ink: var(--p-ink); background: #ffffff; }
+.fall-chart, .sip-chart { position: absolute; inset: var(--s-5); padding: var(--s-3); display: grid; }
+.fall-chart svg, .sip-chart svg { width: 100%; height: 100%; }
+.c-mini text { font-size: 15px; }
+.c-growth text { font-size: 14px; }
+
+/* the record: its SIP line under the heading */
+#ledger .panel { --p-h: 300px; margin-top: var(--s-7); }
+/* the deepest falls: four small charts side by side in one window */
+.falls { margin-top: var(--s-7); display: grid; grid-template-rows: auto minmax(0, 1fr); --fx-bg: #ffffff; background: #ffffff; }
+.falls .ui-win__bar { display: flex; align-items: center; gap: 10px; }
+.falls__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); min-height: 0; }
+.falls__col { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: var(--s-2); padding: var(--s-5); min-height: 0; }
+.falls__col + .falls__col { border-left: 1px solid var(--u-line); }
+.falls__month { margin: 0; font-weight: 500; color: var(--ink); display: flex; justify-content: space-between; gap: var(--s-3); }
+.falls__drop { color: var(--c-fall); }
+.falls__fig { margin: 0; font-size: var(--t-lead); color: var(--ink); }
+.falls__fig span { display: block; font-size: var(--t-small); color: var(--muted); }
+.falls__plot { min-height: 160px; position: relative; }
+.falls__plot svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+@media (max-width: 1023px) {
+  .falls__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .falls__col:nth-child(3) { border-left: 0; }
+  .falls__col:nth-child(n + 3) { border-top: 1px solid var(--u-line); }
+}
+@media (max-width: 639px) {
+  .falls__col { padding: var(--s-3); }
+  .falls__fig { font-size: var(--t-body); }
+  .falls__plot { min-height: 110px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) { #ledger .panel { --p-h: 220px; } }
+
+/* the questions: how the data travels, under the heading */
+#questions .panel { --p-h: 340px; margin-top: var(--s-7); }
+@media (min-width: 640px) and (max-width: 1023px) { #questions .panel { --p-h: 300px; } }
+@media (max-width: 639px) { #questions .panel { --p-h: 300px; margin-top: var(--s-5); } }
+@media (max-width: 639px) { .fall-chart, .sip-chart { inset: var(--s-3); padding: var(--s-2); } }
+
+/* the name across the wrap: Instrument Sans rises above a .86 line, so the line is set to hold its capitals */
+.close__word { line-height: 1.02; }
+/* tablet and phone: the list pane shows only the rows it holds whole */
+@media (max-width: 1023px) { .app .ui-win__row:nth-child(n + 4) { display: none; } }
+/* the answers at rest (under 1024px): three rows that fit one screen */
+@media (min-width: 640px) and (max-width: 1023px) { [data-moment="pinned-chapters"]:not(.is-live) .mo-pc__visual > svg { max-height: 19svh; } }
+/* the questions stack the diagram over the answers below 1024px: two screens there */
+@media (min-width: 640px) and (max-width: 1023px) { #questions .panel { --p-h: 220px; } #ledger .panel { --p-h: 160px; } }
+@media (max-width: 639px) {
+  /* a phone: the record and the questions take two screens with their pictures; the answers at rest fill two
+     screens; the close keeps its name and links over two */
+  #ledger, #questions { --hm: 2 }
+  #ledger .panel { display: block; --p-h: 320px; margin-top: var(--s-6); }
+  main > #answers[data-moment]:not(.is-live) { min-height: 200svh; }
+  footer.closing { --hm: 2 }
+}
+/* from 1024px the picture under a heading runs down to the section's foot, beside the list it explains */
+@media (min-width: 1024px) {
+  #ledger .section-head, #questions .section-head { align-self: stretch; display: flex; flex-direction: column; }
+  #ledger .section-head > .panel, #questions .section-head > .panel { flex: 1 1 auto; }
+}
+/* a phone: the answers' pictures at 4:3, so the three rows fill the section's two screens */
+@media (max-width: 639px) {
+  main > #answers[data-moment]:not(.is-live) .mo-pc__visual > svg { aspect-ratio: 4 / 3; max-height: none; }
+  #ledger .panel { --p-h: 400px; }
+  #questions .panel { --p-h: 500px; }
+}
+@media (max-width: 359px) { .falls__plot { min-height: 72px; } .falls__col { gap: var(--s-1); } }
+@media (min-width: 640px) and (max-width: 1023px) { #questions .panel { --p-h: 190px; } }
+
+/* small charts keep 13px labels at every width (their viewBox scales with the column) */
+@media (max-width: 639px) { .c-mini text { font-size: 26px; } .c-growth text { font-size: 20px; } }
+@media (min-width: 640px) and (max-width: 1023px) { .c-mini text { font-size: 18px; } }
+@media (max-width: 359px) { #questions .panel { --p-h: 340px; } #ledger .panel { --p-h: 300px; } }
