@@ -195,7 +195,7 @@ ${STYLES}
               <p class="t-label">Pages</p>
               <a href="/falls/">Every fall<span>Seven months, before and after</span></a>
               <a href="/money/">Where the money goes<span>Fund categories by year</span></a>
-              <a href="/method/">How we tested it<span>The rules, fixed in advance</span></a>
+              <a href="/method/">How I tested it<span>The rules, fixed in advance</span></a>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@
     { "title": "Pages", "links": [
       ["Every fall", "/falls/"],
       ["Where the money goes", "/money/"],
-      ["How we tested it", "/method/"],
+      ["How I tested it", "/method/"],
       ["Aditya Khetarpal on LinkedIn", "https://www.linkedin.com/in/adityakhetarpal"]
     ] },
     { "title": "Data", "links": [

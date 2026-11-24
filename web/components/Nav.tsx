@@ -8,7 +8,7 @@ const LINKS = [
   ["/", "The answer"],
   ["/falls/", "Every fall"],
   ["/money/", "Where the money goes"],
-  ["/method/", "How we tested it"],
+  ["/method/", "How I tested it"],
 ] as const;
 
 export default function Nav() {

@@ -3,7 +3,7 @@ import { overview, monthLong, monthName, pct, inr } from "@/lib/data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/method" },
-  title: "How we tested it",
+  title: "How I tested it",
   description: "The pre-registered test behind SIP Pulse: hypotheses fixed before any data was seen, definitions, verdicts, robustness checks, data checks and limits.",
 };
 
@@ -28,9 +28,9 @@ export default function Method() {
   return (
     <div className="wrap">
       <div className="head">
-        <h1>How we tested it</h1>
+        <h1>How I tested it</h1>
         <p>
-          The question, the definitions and the rules for each verdict were written down and locked on {r.pre_registered}, before we downloaded any data, so the answer couldn&apos;t
+          The question, the definitions and the rules for each verdict were written down and locked on {r.pre_registered}, before I downloaded any data, so the answer couldn&apos;t
           bend to fit. Everything below can be checked in the <a href={GH}>notebooks on GitHub</a>.
         </p>
       </div>
@@ -43,8 +43,8 @@ export default function Method() {
         </ul>
         <p><b>Fall month:</b> the Nifty 50 closes 5% or more below the previous month-end. There were {r.fall_months.length}: {r.fall_months.map((f) => `${monthName(f.month)} (${pct(f.nifty_return_pct)})`).join(", ")}.</p>
         <p>
-          <b>How &ldquo;lower&rdquo; is judged:</b> we take the median month-on-month change in the months after a fall, minus the median in all other
-          months. To see how sure we can be, we resample both groups 10,000 times and keep the middle 90% of the results. H1 counts as supported only if that
+          <b>How &ldquo;lower&rdquo; is judged:</b> I take the median month-on-month change in the months after a fall, minus the median in all other
+          months. To see how sure I can be, I resample both groups 10,000 times and keep the middle 90% of the results. H1 counts as supported only if that
           whole range is below zero. H2 is rejected only if its whole range is below zero.
         </p>
 
@@ -76,7 +76,7 @@ export default function Method() {
 
         <h2>Found after the test</h2>
         <p>
-          The same-month correlation led us to count how often equity inflows rose in the fall month itself: {r.exploratory_fall_month.rose} of{" "}
+          The same-month correlation led me to count how often equity inflows rose in the fall month itself: {r.exploratory_fall_month.rose} of{" "}
           {r.exploratory_fall_month.of}. This wasn&apos;t part of the locked test, so it is labelled &ldquo;found after the test&rdquo; everywhere it appears.
           Its 90% range ({pct(r.exploratory_fall_month.low)} to {pct(r.exploratory_fall_month.high)}) just touches zero.
         </p>
@@ -84,7 +84,7 @@ export default function Method() {
         <h2>Changes after locking, and why</h2>
         <ul>
           <li>
-            <b>Better data, found before anything was downloaded.</b> The plan first used AMFI&apos;s monthly notes (about 28 months, read from PDFs). We then
+            <b>Better data, found before anything was downloaded.</b> The plan first used AMFI&apos;s monthly notes (about 28 months, read from PDFs). I then
             found AMFI&apos;s one-file-per-month Excel reports and its SIP table, covering {o.months} months including the 2020 crash. The hypotheses and rules
             didn&apos;t change.
           </li>
@@ -102,7 +102,7 @@ export default function Method() {
           <li><b>Nifty 50:</b> close on the last trading day of each month, from Yahoo Finance (<code>^NSEI</code>). This is the price index, not the total-return index.</li>
           <li>
             <b>{o.checks.run} checks, {o.checks.failed} failed:</b> every scheme category adds up to its section subtotal, every section adds up to the grand total,
-            three months match figures AMFI and the press published, October 2026 SIP matches AMFI&apos;s monthly note, and we count{" "}
+            three months match figures AMFI and the press published, October 2026 SIP matches AMFI&apos;s monthly note, and I count{" "}
             {o.inflow_streak} months of inflows in a row, exactly what AMFI reported for October 2026.
           </li>
         </ul>
