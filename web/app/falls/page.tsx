@@ -7,11 +7,14 @@ export const metadata: Metadata = {
   description: "Each month since April 2019 that the Nifty 50 fell 5% or more, and what happened to equity fund inflows and SIP contributions around it.",
 };
 
-/** Five small bars: equity inflow from the month before the fall to three months after. */
+// one scale for every card, so the bars compare across years (inflows grew about five times from 2019 to 2026)
+const ALL = falls.flatMap((f) => f.rows.map((r) => r.equity ?? 0));
+const SCALE = { max: Math.max(...ALL, 1), min: Math.min(0, ...ALL) };
+
+/** Five small bars: equity inflow from the month before the fall to three months after, on the shared scale. */
 function Bars({ rows }: { rows: { offset: number; equity: number | null }[] }) {
   const W = 300, H = 120, T = 18, B = 18;
-  const vals = rows.map((r) => r.equity ?? 0);
-  const max = Math.max(...vals, 1), min = Math.min(0, ...vals);
+  const { max, min } = SCALE;
   const y = (v: number) => T + (H - T - B) * (1 - (v - min) / (max - min));
   const bw = W / 5;
   return (
@@ -31,14 +34,15 @@ function Bars({ rows }: { rows: { offset: number; equity: number | null }[] }) {
 
 export default function Falls() {
   const ex = overview.results.exploratory_fall_month;
-  const list = [...falls].sort((a, b) => a.nifty_ret - b.nifty_ret);
+  // in date order, oldest first, so the months read as a timeline
+  const list = [...falls].sort((a, b) => a.month.localeCompare(b.month));
   return (
     <div className="wrap">
       <div className="head">
         <h1>Every fall, month by month</h1>
         <p>
           A fall month is any month the Nifty 50 closed 5% or more below the month before. From {monthLong(overview.window[0])} to {monthLong(overview.window[1])} there were {falls.length}. For each one: net money into equity
-          funds and SIP contributions, from the month before to three months after. Biggest fall first.
+          funds and SIP contributions, from the month before to three months after. Oldest first, all on one scale.
         </p>
       </div>
 

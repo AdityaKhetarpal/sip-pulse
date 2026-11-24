@@ -42,9 +42,10 @@ export function pulse(data, W, opts = {}) {
 }
 
 /** A small five-month chart for one fall: the month before, the fall, three after. Bars: equity inflows; line: SIP. */
-export function fallMini(rows, W = 400, H = 220) {
+export function fallMini(rows, W = 400, H = 220, top = null) {
   const L = 8, R = 8, T = 16, B = 30;
-  const vmax = Math.ceil(Math.max(...rows.map((r) => Math.max(r.equity, r.sip))) / 5000) * 5000;
+  // top: one scale shared by every fall's chart, so they compare across years
+  const vmax = top ?? Math.ceil(Math.max(...rows.map((r) => Math.max(r.equity, r.sip))) / 5000) * 5000;
   const n = rows.length, bw = (W - L - R) / n;
   const x = (i) => L + i * bw + bw / 2;
   const y = (v) => T + (H - T - B) * (1 - v / vmax);

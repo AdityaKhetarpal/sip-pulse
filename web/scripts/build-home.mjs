@@ -40,14 +40,16 @@ const rows = recent.map((m) => `
 // the four deepest falls with a full window (the month before and three after), no two windows sharing a fall
 const idx = (m) => +m.slice(0, 4) * 12 + +m.slice(5, 7);
 const deepest = [...falls].filter((f) => f.rows.length === 5).sort((a, b) => a.nifty_ret - b.nifty_ret)
-  .reduce((keep, f) => (keep.some((g) => Math.abs(idx(g.month) - idx(f.month)) < 3) ? keep : [...keep, f]), []).slice(0, 4);
+  .reduce((keep, f) => (keep.some((g) => Math.abs(idx(g.month) - idx(f.month)) < 3) ? keep : [...keep, f]), []).slice(0, 4)
+  .sort((a, b) => a.month.localeCompare(b.month)); // chosen by depth, shown in date order
+const fallTop = Math.ceil(Math.max(...deepest.flatMap((f) => f.rows.map((r) => Math.max(r.equity, r.sip)))) / 5000) * 5000;
 const fallCols = deepest.map((f) => {
   const at = f.rows.find((x) => x.offset === 0);
   return `
           <div class="falls__col">
             <p class="falls__month">${label(f.month)}<span class="falls__drop">Nifty ${pct(f.nifty_ret)}</span></p>
             <p class="falls__fig">₹${inr(at.equity)} crore<span>into equity funds</span></p>
-            <div class="falls__plot" role="img" aria-label="Equity inflows and SIP money from ${label(f.rows[0].month)} to ${label(f.rows.at(-1).month)}, with ${label(f.month)} marked">${fallMini(f.rows, 300, 240)}</div>
+            <div class="falls__plot" role="img" aria-label="Equity inflows and SIP money from ${label(f.rows[0].month)} to ${label(f.rows.at(-1).month)}, with ${label(f.month)} marked">${fallMini(f.rows, 300, 240, fallTop)}</div>
           </div>`;
 }).join("");
 
